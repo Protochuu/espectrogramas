@@ -1,0 +1,20 @@
+[project]
+name = "espectograma"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "protochuu",email = "chat.et.coq@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "scipy (>=1.16.1,<2.0.0)",
+    "pydub (>=0.25.1,<0.26.0)",
+    "matplotlib (>=3.10.6,<4.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
