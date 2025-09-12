@@ -4,26 +4,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import ShortTimeFFT
 from scipy.signal.windows import gaussian
+import os 
 
+os.makedirs("./converted", exist_ok=True)
+os.makedirs("./audio", exist_ok=True)
+os.makedirs("./spectrogram", exist_ok= True)
 
-#song = AudioSegment.from_ogg('evaluacion_3.mp3')
-#song.export('evaluacion_3.wav', format = 'wav')
+for root,dirs,files in os.walk("./audio"):
+    for file in files:
+        if not os.path.exists(file):
+            print(f"Se está convirtiendo el archivo: {file}")
+            song = AudioSegment.from_ogg(f"./audio/{file}")
 
-samplerate,data = wavfile.read('evaluacion_3.wav')
+            song_root,ext= os.path.splitext(file)
+            song.export(f'./converted/{song_root}.wav', format = 'wav')
 
-length = data.shape[0]/samplerate  
-time = np.linspace(0.,length, data.shape[0])
-#plt.plot(time,data[:])
-#plt.show()
+        samplerate,data = wavfile.read(f'./converted/{song_root}.wav')
 
-g_std = 8
-w = gaussian(50, std = g_std, sym = True)
-SFT = ShortTimeFFT(w,hop=16, fs=samplerate, mfft=1024,scale_to='psd')
-#Sx = SFT.spectrogram(data)
-plt.specgram(data,Fs = samplerate,NFFT = 256, noverlap = 128, cmap = 'viridis' )
-#fig1, ax1= plt.subplots(figsize = (6.,4.))
-#t_lo,t_hi = SFT.extent(data.shape[0])[:2]
-#im1 = ax1.imshow(Sx, cmap = 'magma', origin='lower', aspect='auto')
+        print(f"Espectograma de audio: {file} se está generando")
+        plt.specgram(data,Fs = samplerate,NFFT = 256, noverlap = 128, cmap = 'viridis')
 
-
-plt.show()
+        print(f"Espectograma de audio: {file} generado")
+        plt.savefig(f'./spectrogram/{song_root}.png')
